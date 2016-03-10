@@ -13,7 +13,7 @@ Plugin 'gmarik/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 " plugin on GitHub repo
-Plugin 'tpope/vim-surround'
+" Plugin 'tpope/vim-surround'
 Plugin 'kien/ctrlp.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
@@ -86,6 +86,8 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 set number
+set ignorecase
+set smartcase
 set laststatus=2
 syntax on
 let mapleader = ','
@@ -110,6 +112,9 @@ map <Leader>n <plug>NERDTreeTabsToggle<CR>
 " CtrlP
 let g:ctrlp_working_path_mode = 'ra'
 nmap <Leader>q :CtrlP<CR>
+
+" Paste mode
+set pastetoggle=<F2>
 
 " neocomplcache
 "Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
@@ -211,7 +216,8 @@ let g:syntastic_python_checkers = ['flake8']
 " dbext
 let g:dbext_default_profile_clickavia = 'type=MYSQL:user=root:passwd=root:dbname=clickavia_development'
 
-au FileType python setl sw=4 sts=4 et
+au FileType python setl sw=4 ts=4 sts=4 et
+au FileType python setl cc=80
 au FileType ruby setl sw=2 sts=2 et
 
 set backspace=indent,eol,start
