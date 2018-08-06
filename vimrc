@@ -8,7 +8,7 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
+Plugin 'VundleVim/Vundle.vim'
 
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
@@ -21,14 +21,21 @@ Plugin 'Lokaltog/vim-easymotion'
 Plugin 'majutsushi/tagbar'
 Plugin 'mileszs/ack.vim'
 
+"html
+Plugin 'isnowfy/python-vim-instant-markdown'
+Plugin 'jtratner/vim-flavored-markdown'
+Plugin 'suan/vim-instant-markdown'
+Plugin 'nelstrom/vim-markdown-preview'
+""python sytax checker
+Plugin 'nvie/vim-flake8'
+Plugin 'vim-scripts/Pydiction'
+Plugin 'vim-scripts/indentpython.vim'
+Plugin 'scrooloose/syntastic'
+
 Plugin 'tomtom/tcomment_vim'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-rake'
 Plugin 'vim-ruby/vim-ruby'
-Plugin 'Shougo/neocomplcache.vim'
-Plugin 'marcweber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
 Plugin 'jelera/vim-javascript-syntax'
 Plugin 'itspriddle/vim-jquery'
 Plugin 'vim-scripts/TagHighlight'
@@ -38,27 +45,36 @@ Plugin 'tpope/vim-bundler'
 Plugin 'tpope/vim-fugitive'
 Plugin 'gregsexton/gitv'
 
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'klen/rope-vim'
+Plugin 'ervandew/supertab'
+""code folding
+Plugin 'tmhedberg/SimpylFold'
+
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'vim-scripts/YankRing.vim'
-Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-session'
+"Plugin 'xolox/vim-misc'
+"Plugin 'xolox/vim-session'
 
 Plugin 'ecomba/vim-ruby-refactoring'
-Plugin 'tpope/vim-repeat'
-Plugin 'matchit.zip'
-Plugin 'Raimondi/delimitMate'
-Plugin 'scrooloose/syntastic'
+"Plugin 'tpope/vim-repeat'
+"Plugin 'matchit.zip'
+Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-endwise'
-Plugin 'craigemery/vim-autotag'
-Plugin 'berdandy/AnsiEsc.vim'
+"Plugin 'craigemery/vim-autotag'
+"Plugin 'berdandy/AnsiEsc.vim'
 Plugin 'bling/vim-airline'
 Plugin 'jlanzarotta/bufexplorer'
 Plugin 'dbext.vim'
+Plugin 'git://github.com/nono/vim-handlebars.git'
 
-Plugin 'git://github.com/python-rope/ropevim.git'
+"Plugin 'git://github.com/python-rope/ropevim.git'
 " Color schemes
-Plugin 'flazz/vim-colorschemes'
+"Plugin 'flazz/vim-colorschemes'
+"Colors!!!
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'jnurmine/Zenburn'
 " plugin from http://vim-scripts.org/vim/scripts.html
 " Plugin 'L9'
 " Git plugin not hosted on GitHub
@@ -70,6 +86,9 @@ Plugin 'flazz/vim-colorschemes'
 " Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
 " Avoid a name conflict with L9
 " Plugin 'user/L9', {'name': 'newL9'}
+
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'vim-erlang/vim-erlang-runtime'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -91,7 +110,12 @@ set smartcase
 set laststatus=2
 syntax on
 let mapleader = ','
-highlight Pmenu ctermbg=238 gui=bold
+"highlight Pmenu ctermbg=238 gui=bold
+
+let g:SimpylFold_docstring_preview = 1
+
+"autocomplete
+let g:ycm_autoclose_preview_window_after_completion=1
 
 " easymotion
 let g:EasyMotion_do_mapping = 0 " Disable default mappings
@@ -105,6 +129,15 @@ nmap <Leader><Leader>w <Plug>(easymotion-w)
 
 " tagbar
 nmap <F8> :TagbarToggle<CR>
+" easymotion
+let g:EasyMotion_do_mapping = 0 " Disable default mappings
+" Bi-directional find motion
+" " Jump to anywhere you want with minimal keystrokes, with just one key
+" binding.
+" " `s{char}{label}`
+nmap <Leader><Leader>s <Plug>(easymotion-s)
+" Word find motion
+nmap <Leader><Leader>w <Plug>(easymotion-w)
 
 " NERDTree
 map <Leader>n <plug>NERDTreeTabsToggle<CR>
@@ -116,109 +149,95 @@ nmap <Leader>q :CtrlP<CR>
 " Paste mode
 set pastetoggle=<F2>
 
-" neocomplcache
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
-let g:acp_enableAtStartup = 0
-" Use neocomplcache.
-let g:neocomplcache_enable_at_startup = 1
-" Use smartcase.
-let g:neocomplcache_enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplcache_min_syntax_length = 3
-let g:neocomplcache_lock_buffer_name_pattern = '\*ku\*'
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
-" Enable heavy features.
-" Use camel case completion.
-"let g:neocomplcache_enable_camel_case_completion = 1
-" Use underbar completion.
-"let g:neocomplcache_enable_underbar_completion = 1
+let NERDTreeIgnore=['\.pyc$', '\~$']
 
-" Define dictionary.
-let g:neocomplcache_dictionary_filetype_lists = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplcache_keyword_patterns')
-    let g:neocomplcache_keyword_patterns = {}
-endif
-let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplcache#undo_completion()
-inoremap <expr><C-l>     neocomplcache#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return neocomplcache#smart_close_popup() . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? neocomplcache#close_popup() : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
-inoremap <expr><C-y>  neocomplcache#close_popup()
-inoremap <expr><C-e>  neocomplcache#cancel_popup()
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? neocomplcache#close_popup() : "\<Space>"
-
-" For cursor moving in insert mode(Not recommended)
-"inoremap <expr><Left>  neocomplcache#close_popup() . "\<Left>"
-"inoremap <expr><Right> neocomplcache#close_popup() . "\<Right>"
-"inoremap <expr><Up>    neocomplcache#close_popup() . "\<Up>"
-"inoremap <expr><Down>  neocomplcache#close_popup() . "\<Down>"
-" Or set this.
-"let g:neocomplcache_enable_cursor_hold_i = 1
-" Or set this.
-"let g:neocomplcache_enable_insert_char_pre = 1
-
-" AutoComplPop like behavior.
-"let g:neocomplcache_enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplcache_enable_auto_select = 1
-"let g:neocomplcache_disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
+py << EOF
+import os.path
+import sys
+import vim
+if 'VIRTUA_ENV' in os.environ:
+  project_base_dir = os.environ['VIRTUAL_ENV']
+  sys.path.insert(0, project_base_dir)
+  activate_this = os.path.join(project_base_dir,'bin/activate_this.py')
+  execfile(activate_this, dict(__file__=activate_this))
+EOF
 
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+autocmd FileType javascript,coffee setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
-" Enable heavy omni completion.
-if !exists('g:neocomplcache_omni_patterns')
-  let g:neocomplcache_omni_patterns = {}
-endif
-let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-let g:neocomplcache_omni_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-let g:neocomplcache_omni_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-let g:neocomplcache_omni_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-
-" syntastic
-let g:syntastic_enable_ruby_checker = 1
-let g:syntastic_enable_python_checker = 1
-let g:syntastic_python_checkers = ['flake8']
 
 " dbext
 let g:dbext_default_profile_clickavia = 'type=MYSQL:user=root:passwd=root:dbname=clickavia_development'
 
-au FileType python setl sw=4 ts=4 sts=4 et
+
+"------------Start Python PEP 8 stuff----------------
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+" Number of spaces that a pre-existing tab is equal to.
+au BufRead,BufNewFile *py,*pyw,*.c,*.h set tabstop=4
+
+"spaces for indents
+au BufRead,BufNewFile *.py,*pyw set shiftwidth=4
+au BufRead,BufNewFile *.py,*.pyw set expandtab
+au BufRead,BufNewFile *.py set softtabstop=4
+
+" Use the below highlight group when displaying bad whitespace is desired.
+highlight BadWhitespace ctermbg=red guibg=red
+
+" Display tabs at the beginning of a line in Python mode as bad.
+au BufRead,BufNewFile *.py,*.pyw match BadWhitespace /^\t\+/
+" Make trailing whitespace be flagged as bad.
+au BufRead,BufNewFile *.py,*.pyw,*.c,*.h match BadWhitespace /\s\+$/
+
+" Wrap text after a certain number of characters
+au BufRead,BufNewFile *.py,*.pyw, set textwidth=100
+
+" Use UNIX (\n) line endings.
+au BufNewFile *.py,*.pyw,*.c,*.h set fileformat=unix
+
+" Set the default file encoding to UTF-8:
+set encoding=utf-8
+
+" For full syntax highlighting:
+let python_highlight_all=1
+syntax on
+
+" Keep indentation level from previous line:
+autocmd FileType python set autoindent
+
+" make backspaces more powerfull
+set backspace=indent,eol,start
+
+
+"Folding based on indentation:
+autocmd FileType python set foldmethod=indent
+"use space to open folds
+nnoremap <space> za 
+set foldlevelstart=20
+
+let g:pydiction_location = '/Users/homer/.vim/bundle/Pydiction/complete-dict'
 au FileType python setl cc=80
+"----------Stop python PEP 8 stuff--------------
+
+"----------Start ruby---------------------------
+autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1 
+autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+"----------Stop ruby----------------------------
+au FileType javascript setl sw=2 ts=2 sts=2 et
 au FileType ruby setl sw=2 sts=2 et
+au FileType ruby setl cc=120
+au FileType coffee setl sw=2 sts=2 et
+
+autocmd FileType html setlocal ts=4 sts=4 sw=4 et
+autocmd FileType css setlocal ts=2 sts=2 sw=2 et
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 et
+
+au BufRead,BufNewFile *.handlebars,*.hbs set ft=html syntax=handlebars
 
 set backspace=indent,eol,start
-colorscheme molokai
+cmap w!! w !sudo tee % >/dev/null
